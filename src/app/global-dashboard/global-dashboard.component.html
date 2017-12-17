@@ -1,12 +1,8 @@
-<p>
-  global-dashboard works!
-</p>
-
 <input type="text" name="" id="new-country-input" (keyup)="countryInput$.next($event.target.value)">
 <button id="add-country">Add country</button>
 
-<ul>
-  <li *ngFor="let tile of tiles">
+<div class="wrapper">
+  <div class="box" *ngFor="let tile of tiles">
     {{tile.name}}
-  </li>
-</ul>
+  </div>
+</div>
