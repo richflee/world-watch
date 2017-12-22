@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -6,18 +6,26 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
   browserLang = '-';
 
   constructor(private translateService: TranslateService) {
 
-    translateService.addLangs(['en', 'es']); // add more
-    translateService.setDefaultLang('es');
+    this.translateService.addLangs(['en', 'es']); // add more
+    this.translateService.setDefaultLang('es');
 
-    const browserLang = translateService.getBrowserLang();
+    const browserLang = this.translateService.getBrowserLang();
     this.browserLang = browserLang;
-    translateService.use(browserLang);
+    this.translateService.use(browserLang);
+  }
+
+  ngOnInit() {
+
+    this.translateService.onLangChange
+      .subscribe((langEvent) => {
+        console.log('langEvent', langEvent['lang']);
+      });
   }
 
 }
