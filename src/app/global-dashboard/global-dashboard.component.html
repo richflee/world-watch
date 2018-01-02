@@ -3,6 +3,7 @@
 
 <div class="wrapper">
   <div class="box" *ngFor="let tile of tiles">
-    {{tile.name}}
+    {{tile.capital}}
+    <img [src]="tile.flagImageUrl" height="60">
   </div>
 </div>

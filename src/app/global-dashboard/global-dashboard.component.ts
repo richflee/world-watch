@@ -15,6 +15,8 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/withLatestFrom';
 import { Response } from '@angular/http/src/static_response';
 import { List } from 'immutable';
+import { OpenWeatherService } from '../common/open-weather.service';
+import { Country } from '../common/country';
 
 @Component({
   selector: 'app-global-dashboard',
@@ -24,10 +26,9 @@ import { List } from 'immutable';
 export class GlobalDashboardComponent implements OnInit, AfterViewInit {
 
   public countryInput$ = new BehaviorSubject<string>('');
-  public tiles: Array<object>;
-  public tilesList = List<object>();
+  public tiles: Array<Country>;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private openWeatherService: OpenWeatherService) {
     this.tiles = [];
   }
 
@@ -43,23 +44,19 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
       .withLatestFrom(this.countryInput$)
       .map((val: Array<any>) => val[1])
       .mergeMap((country) => this.doRequest(country))
-      .do((country) => this.getWeather(country))
+      .do((countries) => {
+        this.addCountry(countries[0]);
+      })
+      .mergeMap((country) => this.getWeather(country))
       .subscribe((data) => {
-        this.addCountry(data[0]['name']);
+        console.log('weather', data);
       });
   }
 
-  getWeather(country: object): void {
-
-    const city = country[0]['capital'].toLowerCase();
-    const OPEN_WEATHER_MAP_URL = 'http://api.openweathermap.org/data/2.5/weather?appid=5df010af0164549954af849cf3e7489b&units=metric';
-    const requestUrl = `${OPEN_WEATHER_MAP_URL}&q=${city}`;
-
-    this.http.get(requestUrl)
-            .map((res) => res.json())
-            .subscribe((weather) => {
-              console.log('weather', weather);
-            });
+  getWeather(countries: Array<object>): Observable<object> {
+    console.log('countries', countries);
+    const city = countries[0]['capital'].toLowerCase();
+    return this.openWeatherService.getWeatherForCity(city);
   }
 
   doRequest(country: string): Observable<Array<object>> {
@@ -67,11 +64,13 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
             .map((res) => res.json());
   }
 
-  addCountry(country: string): void {
+  addCountry(country: object): void {
 
-    this.tiles.push({
-      name: country
-    });
+    const c = new Country(country['name']);
+    c.capital = country['capital'];
+    c.flagImageUrl = country['flag'];
+
+    this.tiles.push(c);
   }
 
 }

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpModule } from '@angular/http';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { CustomInterceptor } from './common/http/custom.interceptor';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
