@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+// import * as getBrowserLang from 'langDetector';
+// import getBrowserLang from 'langDetector';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +11,12 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit {
   title = 'app';
   browserLang = '-';
+  langDetected = '-';
 
   constructor(private translateService: TranslateService) {
+
+    const lang = langDetector();
+    this.langDetected = lang;
 
     this.translateService.addLangs(['en', 'es']); // add more
     this.translateService.setDefaultLang('es');
