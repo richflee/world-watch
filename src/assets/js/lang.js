@@ -1,4 +1,4 @@
-export function getBrowserLang() {
+var getBrowserLang = function() {
     if (typeof window === 'undefined' || typeof window.navigator === 'undefined') {
         return undefined;
     }
