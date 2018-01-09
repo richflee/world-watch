@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 // import * as getBrowserLang from 'langDetector';
 // import getBrowserLang from 'langDetector';
 
+declare var langDetector: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
