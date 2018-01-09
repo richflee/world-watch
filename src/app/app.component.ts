@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
 
   constructor(private translateService: TranslateService) {
 
-    const lang = langDetector();
-    this.langDetected = lang;
+    new langDetector();
+    // this.langDetected = lang;
 
     this.translateService.addLangs(['en', 'es']); // add more
     this.translateService.setDefaultLang('es');
