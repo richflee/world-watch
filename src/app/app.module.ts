@@ -10,6 +10,13 @@ import { CustomInterceptor } from './common/http/custom.interceptor';
 import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { CountryEffects } from './global-dashboard/effects/country.effects';
+import { countryReducer } from './global-dashboard/reducers/country.reducers';
+import { EuCountriesService } from './common/eu-countries.service';
+import { OpenWeatherService } from './common/open-weather.service';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -29,12 +36,16 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
       }
-    })
+    }),
+    StoreModule.forRoot({ countries: countryReducer }),
+    EffectsModule.forRoot([ CountryEffects ])
   ],
   providers: [
     AppRoutingModule,
     HttpClient,
-    TranslateService
+    TranslateService,
+    EuCountriesService,
+    OpenWeatherService
   ],
   bootstrap: [
     AppComponent

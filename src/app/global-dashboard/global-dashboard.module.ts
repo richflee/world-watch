@@ -7,6 +7,7 @@ import { CustomInterceptor } from '../common/http/custom.interceptor';
 import { OpenWeatherService } from '../common/open-weather.service';
 
 import { GlobalDashboardComponent } from './global-dashboard.component';
+import { DashboardTileComponent } from './dashboard-tile/dashboard-tile.component';
 
 @NgModule({
     imports: [
@@ -16,7 +17,7 @@ import { GlobalDashboardComponent } from './global-dashboard.component';
         HttpClientModule
     ],
     exports: [],
-    declarations: [GlobalDashboardComponent],
+    declarations: [GlobalDashboardComponent, DashboardTileComponent],
     providers: [
         HttpClient,
         {

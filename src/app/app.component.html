@@ -1,10 +1,11 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    {{ "app.labels.title" | translate }}
-  </h1>
-  <h6>getBrowserLang: {{ browserLang }}</h6>
-  <h6>LANG DETECTED: {{ langDetected }}</h6>
+<div style="padding: 1em;">
+  <div style="text-align:center">
+    <h1>
+      {{ "app.labels.title" | translate }}
+    </h1>
+    <h6>getBrowserLang: {{ browserLang }}</h6>
+    <h6>LANG DETECTED: {{ langDetected }}</h6>
+  </div>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>
-

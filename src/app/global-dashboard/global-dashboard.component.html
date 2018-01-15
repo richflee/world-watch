@@ -1,9 +1,23 @@
-<input type="text" name="" id="new-country-input" (keyup)="countryInput$.next($event.target.value)">
-<button id="add-country">Add country</button>
+<div class="row">
+  <div class="col-md-4">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Enter European country name..." id="new-country-input" [ngModel]="searchInput"
+        (keyup)="countryInput$.next($event.target.value)">
+      <span class="input-group-btn">
+        <button id="add-country" class="btn btn-default" type="button">Search</button>
+      </span>
+    </div>
+  </div>
+</div>
 
-<div class="wrapper">
-  <div class="box" *ngFor="let tile of tiles">
-    {{tile.capital}}
-    <img [src]="tile.flagImageUrl" height="60">
+<div class="row">
+  <div *ngIf="addingCountry$ | async" style="width: 100%;">
+    <p>ADDING COUNTRY!</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 wrapper">
+    <app-dashboard-tile *ngFor="let tile of (countries$ | async)" [country]="tile"></app-dashboard-tile>
   </div>
 </div>

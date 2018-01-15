@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -17,6 +16,10 @@ import { Response } from '@angular/http/src/static_response';
 import { List } from 'immutable';
 import { OpenWeatherService } from '../common/open-weather.service';
 import { Country } from '../common/country';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app-state';
+import * as countryActions from './actions/country.actions';
+import { CountryTile } from './models/country-tile';
 
 @Component({
   selector: 'app-global-dashboard',
@@ -26,13 +29,21 @@ import { Country } from '../common/country';
 export class GlobalDashboardComponent implements OnInit, AfterViewInit {
 
   public countryInput$ = new BehaviorSubject<string>('');
-  public tiles: Array<Country>;
+  public searchInput = '';
 
-  constructor(private http: Http, private openWeatherService: OpenWeatherService) {
+  public tiles: Array<Country>;
+  public countryTiles$: Observable<CountryTile[]>;
+  public countries$: Observable<Country[]>;
+  public addingCountry$: Observable<boolean>;
+
+  constructor(private openWeatherService: OpenWeatherService, private store: Store<AppState>) {
     this.tiles = [];
   }
 
   ngOnInit() {
+    this.countryTiles$ = this.store.select(state => state.countries.dashboardTiles);
+    this.countries$ = this.store.select(state => state.countries.countries);
+    this.addingCountry$ = this.store.select(state => state.countries.addingCountry);
   }
 
   ngAfterViewInit() {
@@ -43,34 +54,28 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
     const inputAfterClick$ = addClick$
       .withLatestFrom(this.countryInput$)
       .map((val: Array<any>) => val[1])
-      .mergeMap((country) => this.doRequest(country))
-      .do((countries) => {
-        this.addCountry(countries[0]);
-      })
-      .mergeMap((country) => this.getWeather(country))
-      .subscribe((data) => {
-        console.log('weather', data);
+      .do(countryName => this.searchInput = '')
+      .subscribe((countryName) => {
+        console.log('adding', countryName);
+        const tile = new CountryTile();
+        tile.pending = true;
+        this.store.dispatch(new countryActions.GetCountryAction({ name: countryName, tile: tile }));
       });
+
+      // .mergeMap((countryName) => this.getCountry(countryName))
+      // .do((countries) => {
+      //   this.addCountry(countries[0]);
+      // })
+      // .mergeMap((country) => this.getWeather(country))
+      // .subscribe((data) => {
+      //   console.log('weather', data);
+      // });
   }
 
-  getWeather(countries: Array<object>): Observable<object> {
-    console.log('countries', countries);
-    const city = countries[0]['capital'].toLowerCase();
-    return this.openWeatherService.getWeatherForCity(city);
-  }
-
-  doRequest(country: string): Observable<Array<object>> {
-    return this.http.get(`https://restcountries.eu/rest/v2/name/${country}?fullText=true`)
-            .map((res) => res.json());
-  }
-
-  addCountry(country: object): void {
-
-    const c = new Country(country['name']);
-    c.capital = country['capital'];
-    c.flagImageUrl = country['flag'];
-
-    this.tiles.push(c);
-  }
+  // getWeather(countries: Array<object>): Observable<object> {
+  //   console.log('countries', countries);
+  //   const city = countries[0]['capital'].toLowerCase();
+  //   return this.openWeatherService.getWeatherForCity(city);
+  // }
 
 }
