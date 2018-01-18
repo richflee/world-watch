@@ -56,26 +56,10 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
       .map((val: Array<any>) => val[1])
       .do(countryName => this.searchInput = '')
       .subscribe((countryName) => {
-        console.log('adding', countryName);
         const tile = new CountryTile();
         tile.pending = true;
         this.store.dispatch(new countryActions.GetCountryAction({ name: countryName, tile: tile }));
       });
-
-      // .mergeMap((countryName) => this.getCountry(countryName))
-      // .do((countries) => {
-      //   this.addCountry(countries[0]);
-      // })
-      // .mergeMap((country) => this.getWeather(country))
-      // .subscribe((data) => {
-      //   console.log('weather', data);
-      // });
   }
-
-  // getWeather(countries: Array<object>): Observable<object> {
-  //   console.log('countries', countries);
-  //   const city = countries[0]['capital'].toLowerCase();
-  //   return this.openWeatherService.getWeatherForCity(city);
-  // }
 
 }
