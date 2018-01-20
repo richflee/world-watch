@@ -30,8 +30,7 @@ export function countryReducer(state = initialState, action: countryActions.Acti
             };
         }
         case countryActions.GET_COUNTRY_WEATHER_SUCCESS: {
-            const country = <Country>Object.assign({}, action.payload.country);
-            country.currentTemperature = action.payload.temperature;
+            const country = <Country>Object.assign({}, action.payload);
             return state = {
                 ...state,
                 countries: state.countries.map((c) => {

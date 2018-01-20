@@ -26,8 +26,15 @@ export class CountryEffects {
         .switchMap((action: GetCountryWeatherAction) =>
             this.openWeatherService.getWeatherForCity(action.payload.capital)
                 .map((data) => {
+                    console.log('DATA', data);
                     const temperature = data['main']['temp'];
-                    return (new countryActions.GetCountryWeatherSuccessAction({ country: action.payload, temperature: temperature}));
+                    const weather = data['weather'][0];
+
+                    const country = action.payload;
+                    country.currentTemperature = temperature;
+                    country.setWeather(weather['main']);
+
+                    return (new countryActions.GetCountryWeatherSuccessAction(country));
                 }));
 
     @Effect() addCountry$ = this.actions$

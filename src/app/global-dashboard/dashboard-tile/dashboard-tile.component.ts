@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
 import { Country } from '../../common/country';
+import { WeatherType } from '../weather-type';
 
 @Component({
   selector: 'app-dashboard-tile',
@@ -7,13 +8,10 @@ import { Country } from '../../common/country';
   styleUrls: ['./dashboard-tile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardTileComponent implements OnInit {
+export class DashboardTileComponent {
 
   @Input() country: Country;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

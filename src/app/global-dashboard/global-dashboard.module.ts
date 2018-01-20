@@ -8,6 +8,7 @@ import { OpenWeatherService } from '../common/open-weather.service';
 
 import { GlobalDashboardComponent } from './global-dashboard.component';
 import { DashboardTileComponent } from './dashboard-tile/dashboard-tile.component';
+import { TileWeatherImageDirective } from './tile-weather-image.directive';
 
 @NgModule({
     imports: [
@@ -17,7 +18,7 @@ import { DashboardTileComponent } from './dashboard-tile/dashboard-tile.componen
         HttpClientModule
     ],
     exports: [],
-    declarations: [GlobalDashboardComponent, DashboardTileComponent],
+    declarations: [GlobalDashboardComponent, DashboardTileComponent, TileWeatherImageDirective],
     providers: [
         HttpClient,
         {

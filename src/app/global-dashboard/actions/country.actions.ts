@@ -20,7 +20,7 @@ export class GetCountryWeatherAction {
 
 export class GetCountryWeatherSuccessAction {
     readonly type = GET_COUNTRY_WEATHER_SUCCESS;
-    constructor(public payload: { country: Country, temperature: number }) {}
+    constructor(public payload: Country) {}
 }
 
 export class AddCountryAction {

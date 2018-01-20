@@ -1,6 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="svg-filters">
+  <filter id="duotone_peachypink">
+    <feColorMatrix type="matrix" result="grayscale" values="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0"></feColorMatrix>
+
+    <feComponentTransfer color-interpolation-filters="sRGB" result="duotone_magenta_gold">
+      <feFuncR type="table" tableValues="0.7411764706 0.9882352941"></feFuncR>
+      <feFuncG type="table" tableValues="0.0431372549 0.7333333333"></feFuncG>
+      <feFuncB type="table" tableValues="0.568627451 0.05098039216"></feFuncB>
+      <feFuncA type="table" tableValues="0 1"></feFuncA>
+    </feComponentTransfer>
+  </filter>
+</svg>
+
 <div class="box">
-  <img class="feature-image" [src]="country.flickrImageUrl">
-  <img class="flag-image" [src]="country.flagImageUrl" height="20">
-  <span>{{country.capital}}</span>
-  <p>Currently {{country.currentTemperature}} degrees</p>
+  <img class="img duotoned--peachy" appTileWeatherImage [weather]="country.weatherDescription" alt='Duotoned Image'>
+  <!-- <img class="feature-image" [src]="country.flickrImageUrl">
+  <img class="flag-image" [src]="country.flagImageUrl" height="20"> -->
+  <div>
+    <h4>{{country.capital}}</h4>
+    <p>Currently {{country.currentTemperature}} degrees</p>
+  </div>
 </div>
