@@ -6,22 +6,31 @@ export interface State {
     countries: Country[];
     addingCountry: boolean;
     dashboardTiles: CountryTile[];
+    getCountryError: Error;
 }
 
 const initialState: State = {
     countries: [],
     addingCountry: false,
-    dashboardTiles: []
+    dashboardTiles: [],
+    getCountryError: null
 };
 
 export function countryReducer(state = initialState, action: countryActions.Action): State {
     switch (action.type) {
-        // case countryActions.ADD_COUNTRY_SUCCESS: {
-        //     return state = {
-        //         ...state,
-        //         addingCountry: false
-        //     };
-        // }
+        case countryActions.GET_COUNTRY_FAILURE: {
+            return state = {
+                ...state,
+                getCountryError: action.payload,
+                addingCountry: false
+            };
+        }
+        case countryActions.DELETE_COUNTRY: {
+            return state = {
+                ...state,
+                countries: state.countries.filter((c) => c.capital !== action.payload.capital)
+            };
+        }
         case countryActions.GET_COUNTRY: {
             return state = {
                 ...state,

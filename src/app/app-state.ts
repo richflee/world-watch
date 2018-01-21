@@ -5,6 +5,7 @@ export interface AppState {
     countries: {
         countries: Country[],
         addingCountry: boolean,
-        dashboardTiles: CountryTile[]
+        dashboardTiles: CountryTile[],
+        getCountryError: Error
     };
 }

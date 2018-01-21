@@ -35,15 +35,16 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
   public countryTiles$: Observable<CountryTile[]>;
   public countries$: Observable<Country[]>;
   public addingCountry$: Observable<boolean>;
+  public getCountryError$: Observable<Error>;
 
   constructor(private openWeatherService: OpenWeatherService, private store: Store<AppState>) {
     this.tiles = [];
   }
 
   ngOnInit() {
-    this.countryTiles$ = this.store.select(state => state.countries.dashboardTiles);
     this.countries$ = this.store.select(state => state.countries.countries);
     this.addingCountry$ = this.store.select(state => state.countries.addingCountry);
+    this.getCountryError$ = this.store.select(state => state.countries.getCountryError);
   }
 
   ngAfterViewInit() {

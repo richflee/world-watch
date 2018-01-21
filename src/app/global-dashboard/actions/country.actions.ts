@@ -1,6 +1,8 @@
 import { Country } from '../../common/country';
 import { CountryTile } from '../models/country-tile';
 
+export const GET_COUNTRY_FAILURE = 'GET_COUNTRY_FAILURE';
+export const DELETE_COUNTRY = 'DELETE_COUNTRY';
 export const GET_COUNTRY = 'GET_COUNTRY';
 export const GET_COUNTRY_WEATHER = 'GET_COUNTRY_WEATHER';
 export const GET_COUNTRY_WEATHER_SUCCESS = 'GET_COUNTRY_WEATHER_SUCCESS';
@@ -11,6 +13,16 @@ export const ADD_COUNTRY_SUCCESS = 'ADD_COUNTRY_SUCCESS';
 export class GetCountryAction {
     readonly type = GET_COUNTRY;
     constructor(public payload: { name: string, tile: CountryTile }) {}
+}
+
+export class GetCountryFailureAction {
+    readonly type = GET_COUNTRY_FAILURE;
+    constructor(public payload: Error) {}
+}
+
+export class DeleteCountryAction {
+    readonly type = DELETE_COUNTRY;
+    constructor(public payload: Country) {}
 }
 
 export class GetCountryWeatherAction {
@@ -36,6 +48,8 @@ export class AddCountrySuccessAction {
 export type Action
     = AddCountryAction
     | AddCountrySuccessAction
+    | DeleteCountryAction
     | GetCountryAction
     | GetCountryWeatherAction
-    | GetCountryWeatherSuccessAction;
+    | GetCountryWeatherSuccessAction
+    | GetCountryFailureAction;

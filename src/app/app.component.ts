@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Store } from '@ngrx/store';
+import { AppState } from './app-state';
+import { Observable } from 'rxjs/Observable';
 // import * as getBrowserLang from 'langDetector';
 // import getBrowserLang from 'langDetector';
 
@@ -13,8 +16,9 @@ export class AppComponent implements OnInit {
   title = 'app';
   browserLang = '-';
   langDetected = '-';
+  public getCountryError$: Observable<Error>;
 
-  constructor(private translateService: TranslateService) {
+  constructor(private translateService: TranslateService, private store: Store<AppState>) {
 
     const lang = this.getLang();
     this.langDetected = lang;
@@ -28,6 +32,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.getCountryError$ = this.store.select(state => state.countries.getCountryError);
 
     this.translateService.onLangChange
       .subscribe((langEvent) => {

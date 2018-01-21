@@ -12,11 +12,16 @@
 </svg>
 
 <div class="box">
-  <img class="img duotoned--peachy" appTileWeatherImage [weather]="country.weatherDescription" alt='Duotoned Image'>
+  <img class="img duotoned--peachy" appTileWeatherImage [weather]="country.weatherDescription" [alt]="country.capital">
   <!-- <img class="feature-image" [src]="country.flickrImageUrl">
   <img class="flag-image" [src]="country.flagImageUrl" height="20"> -->
   <div>
-    <h4>{{country.capital}}</h4>
-    <p>Currently {{country.currentTemperature}} degrees</p>
+    <button type="button" id="delete-tile-btn" #deleteTileBtn class="close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div>
+      <h4>{{country.capital}}</h4>
+      <p>Currently {{country.currentTemperature}} degrees</p>
+    </div>
   </div>
 </div>

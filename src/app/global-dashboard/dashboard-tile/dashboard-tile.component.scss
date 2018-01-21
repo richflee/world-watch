@@ -33,11 +33,32 @@
         margin: .5em 0 0 0;
     }
 
-    div {
-        bottom: 0;  
-        padding: 2em 0;      
+    > div {
+        height: 100%;
+        top: 0;  
+        padding: 1em;      
         position: absolute;
         width: 100%;
+
+        div {
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            padding: 2em 0;
+            width: 100%;
+            h4 {
+                font-size: 1.5em;
+                font-weight: 700;
+            }
+        }
+
+        button {
+            background: transparent;
+            color: #fff;
+            float: right;
+            font-size: 1.75em;
+            opacity: 1;
+        }
     }
 
     .duotoned--peachy {

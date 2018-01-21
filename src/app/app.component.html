@@ -1,4 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="getCountryError$ | async" class="row">
+  <div class="col-md-12">
+      <p class="bg-danger">Error: {{ (getCountryError$ | async)?.message }}</p>
+  </div>
+</div>
+
 <div style="padding: 1em;">
   <div style="text-align:center">
     <h1>
