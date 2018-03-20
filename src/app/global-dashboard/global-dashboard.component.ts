@@ -59,8 +59,12 @@ export class GlobalDashboardComponent implements OnInit, AfterViewInit {
       .subscribe((countryName) => {
         const tile = new CountryTile();
         tile.pending = true;
-        this.store.dispatch(new countryActions.GetCountryAction({ name: countryName, tile: tile }));
+        this.store.dispatch(new countryActions.AddCountryAction(countryName));
       });
+  }
+
+  updateInput(input: string): void {
+    this.searchInput = input;
   }
 
 }

@@ -1,23 +1,23 @@
 <div class="row">
   <div class="col-md-4">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Enter European country name..." id="new-country-input" [ngModel]="searchInput"
-        (keyup)="countryInput$.next($event.target.value)">
-      <span class="input-group-btn">
-        <button id="add-country" class="btn btn-default" type="button">Search</button>
-      </span>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div *ngIf="addingCountry$ | async" style="width: 100%;">
-    <p>ADDING COUNTRY!</p>
+    <form class="form-inline country-search-form">
+      <div class="form-group">
+        <input type="text" class="form-control"
+          placeholder="Enter European country name..."
+          name="countryName"
+          id="new-country-input"
+          [ngModel]="searchInput"
+          (ngModelChange)="updateInput($event)"
+          (keyup)="countryInput$.next($event.target.value)">
+      </div>
+      <button id="add-country" class="btn btn-default" type="submit">Search</button>
+    </form>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12 wrapper">
-    <app-dashboard-tile *ngFor="let tile of (countries$ | async)" [country]="tile"></app-dashboard-tile>
+    <app-dashboard-tile *ngFor="let tile of (countries$ | async)"
+      [country]="tile"></app-dashboard-tile>
   </div>
 </div>

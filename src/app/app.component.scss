@@ -1,0 +1,17 @@
+.error-top-notification-container {
+  background: #f5222d;
+  border-bottom: 2px solid #cf1322;
+  position: absolute;
+  transition: top .35s ease-in-out; 
+  width: 100%;
+  
+  > p {
+    color: #fff;
+    margin-bottom: 0;
+    padding: 0.75em 0.5em;
+  }
+}
+
+.show-error-notification {
+  top: 0 !important;
+}

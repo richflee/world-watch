@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app-state';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/filter';
 // import * as getBrowserLang from 'langDetector';
 // import getBrowserLang from 'langDetector';
 
@@ -12,11 +13,12 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'app';
   browserLang = '-';
   langDetected = '-';
   public getCountryError$: Observable<Error>;
+  public showError = false;
 
   constructor(private translateService: TranslateService, private store: Store<AppState>) {
 
@@ -31,9 +33,23 @@ export class AppComponent implements OnInit {
     this.translateService.use(browserLang.match(/en|es/) ? browserLang : 'en');
   }
 
+  ngAfterViewInit() {
+    const errNotificationContainer = document.querySelector('.error-top-notification-container') as HTMLElement;
+    errNotificationContainer.style.top = `-${errNotificationContainer.offsetHeight}px`;
+  }
+
   ngOnInit() {
 
-    this.getCountryError$ = this.store.select(state => state.countries.getCountryError);
+    const showErrorLabel = (err) => {
+      this.showError = true; 
+      setTimeout(() => this.showError = false, 5000);
+    };
+
+    this.getCountryError$ = this.store.select(state => state.countries.getCountryError)
+
+    this.getCountryError$
+      .filter((err) => err !== null)
+      .subscribe(showErrorLabel);
 
     this.translateService.onLangChange
       .subscribe((langEvent) => {

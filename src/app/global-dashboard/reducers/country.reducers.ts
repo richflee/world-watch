@@ -19,9 +19,12 @@ const initialState: State = {
 export function countryReducer(state = initialState, action: countryActions.Action): State {
     switch (action.type) {
         case countryActions.GET_COUNTRY_FAILURE: {
+            const err = action.payload.error;
+            const country = action.payload.country;
             return state = {
                 ...state,
-                getCountryError: action.payload,
+                getCountryError: err,
+                countries: state.countries.filter((c) => c.id !== country.id),
                 addingCountry: false
             };
         }
@@ -31,29 +34,47 @@ export function countryReducer(state = initialState, action: countryActions.Acti
                 countries: state.countries.filter((c) => c.capital !== action.payload.capital)
             };
         }
-        case countryActions.GET_COUNTRY: {
+        // case countryActions.GET_COUNTRY: {
+        //     return state = {
+        //         ...state,
+        //         dashboardTiles: [].concat(state.dashboardTiles, action.payload.tile),
+        //         addingCountry: true
+        //     };
+        // }
+        case countryActions.UPDATE_COUNTRY: {
+            // const newCountry = action.payload.country;
+            const newCountry = <Country>Object.assign({}, action.payload.country);
+            newCountry.pending = false;
             return state = {
                 ...state,
-                dashboardTiles: [].concat(state.dashboardTiles, action.payload.tile),
-                addingCountry: true
-            };
-        }
-        case countryActions.GET_COUNTRY_WEATHER_SUCCESS: {
-            const country = <Country>Object.assign({}, action.payload);
-            return state = {
-                ...state,
-                countries: state.countries.map((c) => {
-                    return c.capital === country.capital ? country : c;
+                countries: state.countries.map((c: Country) => {
+                    if (c.id === newCountry.id) {
+                        console.log('FOUND!', c);
+                        return newCountry;
+                    } else { 
+                        return c;
+                    };
                 })
             };
         }
-        case countryActions.ADD_COUNTRY: {
+        case countryActions.GET_COUNTRY_WEATHER_SUCCESS: {
+            // const country = <Country>Object.assign({}, action.payload);
+            const newCountry = <Country>Object.assign({}, action.payload.country);
+            newCountry.pending = false;
+
             return state = {
                 ...state,
-                addingCountry: false,
-                countries: [].concat(state.countries, action.payload),
+                countries: [].concat(state.countries, newCountry),
             };
         }
+        // case countryActions.ADD_COUNTRY_SUCCESS: {
+        //     console.log('REDUCING', action.payload);
+        //     return state = {
+        //         ...state,
+        //         addingCountry: false,
+        //         countries: [].concat(state.countries, action.payload),
+        //     };
+        // }
         default: {
             return state;
         }

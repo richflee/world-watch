@@ -1,8 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div *ngIf="getCountryError$ | async" class="row">
-  <div class="col-md-12">
-      <p class="bg-danger">Error: {{ (getCountryError$ | async)?.message }}</p>
-  </div>
+<div class="error-top-notification-container bg-danger" [class.show-error-notification]="showError">
+  <p>Error: {{ (getCountryError$ | async)?.message }}</p>
 </div>
 
 <div style="padding: 1em;">

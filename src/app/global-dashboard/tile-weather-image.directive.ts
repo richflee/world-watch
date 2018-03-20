@@ -19,6 +19,10 @@ export class TileWeatherImageDirective implements OnInit {
   private getImageSourceForWeather(weather: WeatherType): string {
     let type = '';
 
+    if (typeof weather === "undefined") {
+      return 'assets/images/mist.jpeg';
+    }
+
     switch (weather) {
       case WeatherType.Clear:
         type = 'assets/images/sunshine.jpeg';
@@ -43,7 +47,7 @@ export class TileWeatherImageDirective implements OnInit {
         break;
 
       default:
-        type = '';
+        type = 'assets/images/mist.jpeg';
         break;
     }
 

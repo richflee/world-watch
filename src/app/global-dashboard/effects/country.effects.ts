@@ -13,7 +13,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Country } from '../../common/country';
-import { AddCountryAction, GetCountryWeatherAction } from '../actions/country.actions';
+import { AddCountryAction, GetCountryWeatherAction, GetCountryAction } from '../actions/country.actions';
 import { catchError, switchMap, map } from 'rxjs/operators';
 
 export class EffectError implements Action {
@@ -31,42 +31,61 @@ export class CountryEffects {
 
     @Effect() getCountryWeather$ = this.actions$
         .ofType(countryActions.GET_COUNTRY_WEATHER)
-        .switchMap((action: GetCountryWeatherAction) =>
-            this.openWeatherService.getWeatherForCity(action.payload.capital)
+        .switchMap((action: GetCountryWeatherAction) => {
+            const country = action.payload.country;
+            return this.openWeatherService.getWeatherForCity(country.capital)
                 .map((data) => {
                     const temperature = data['main']['temp'];
                     const weather = data['weather'][0];
 
-                    const country = action.payload;
+                    // const country = action.payload;
                     country.currentTemperature = temperature;
                     country.setWeather(weather['main']);
 
-                    return (new countryActions.GetCountryWeatherSuccessAction(country));
-                }));
+                    return (new countryActions.GetCountryWeatherSuccessAction({ country: country, id: action.payload.id }));
+                });
+        });
+            
+
+    @Effect() addCountrySuccess$ = this.actions$
+        .ofType(countryActions.ADD_COUNTRY_SUCCESS)
+        .map((action: countryActions.AddCountrySuccessAction) => {
+            return (new countryActions.GetCountryAction(action.payload));
+        });
+
 
     @Effect() addCountry$ = this.actions$
         .ofType(countryActions.ADD_COUNTRY)
         .map((action: AddCountryAction) => {
-            return (new countryActions.GetCountryWeatherAction(action.payload));
+            const c = new Country(action.payload);
+            return (new countryActions.AddCountrySuccessAction(c));
         });
+
+    // @Effect() addCountry$ = this.actions$
+    //     .ofType(countryActions.ADD_COUNTRY)
+    //     .map((action: AddCountryAction) => {
+    //         return (new countryActions.GetCountryWeatherAction(action.payload));
+    //     });
 
     @Effect() getCountry$ = this.actions$
         .ofType(countryActions.GET_COUNTRY)
-        .switchMap((action) =>
-            this.euCountriesServices.getCountry(action['payload']['name'])
+        .switchMap((action: GetCountryAction) => {
+            const country = action.payload;
+            return this.euCountriesServices.getCountry(country.name)
                 .pipe(
                     map(data => {
                         const c = new Country(data['name']);
-                        const capital = data['capital'];
-                        c.capital = capital;
+                        c.id = country.id;
+                        c.capital = data['capital'];
                         c.flagImageUrl = data['flag'];
-                        c.flickrImageUrl = `https://loremflickr.com/g/160/120/${capital}`;
-                        return (new countryActions.AddCountryAction(c));
+                        c.flickrImageUrl = `https://loremflickr.com/g/160/120/${data['capital']}`;
+                        return (new countryActions.GetCountryWeatherAction({ id: country.id, country: c }));
+                        // return (new countryActions.UpdateCountryAction({ id: country.id, country: c }));
                     }),
                     catchError((err) => {
                         const errObj = new Error(`Could not add ${action['payload']['name']}`);
-                        return of(new countryActions.GetCountryFailureAction(errObj));
+                        return of(new countryActions.GetCountryFailureAction({ error: errObj, country: country }));
                     })
-                )
-        );
+                );
+        });
 }

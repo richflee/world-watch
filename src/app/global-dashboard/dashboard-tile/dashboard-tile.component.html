@@ -12,16 +12,24 @@
 </svg>
 
 <div class="box">
-  <img class="img duotoned--peachy" appTileWeatherImage [weather]="country.weatherDescription" [alt]="country.capital">
+  <img class="img duotoned--peachy"
+    appTileWeatherImage
+    [weather]="country.weatherDescription"
+    [alt]="country.capital">
   <!-- <img class="feature-image" [src]="country.flickrImageUrl">
   <img class="flag-image" [src]="country.flagImageUrl" height="20"> -->
   <div>
-    <button type="button" id="delete-tile-btn" #deleteTileBtn class="close" aria-label="Close">
+    <button
+      type="button" id="delete-tile-btn"
+      #deleteTileBtn
+      class="close"
+      aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
     <div>
-      <h4>{{country.capital}}</h4>
-      <p>Currently {{country.currentTemperature}} degrees</p>
+      <h4 *ngIf="!country.pending">{{country.capital}}</h4>
+      <p *ngIf="!country.pending">Currently {{country.currentTemperature}} degrees</p>
+      <h4 *ngIf="country.pending">Adding {{country.name}}...</h4>
     </div>
   </div>
 </div>

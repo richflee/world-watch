@@ -2,7 +2,7 @@ import { WeatherType } from '../global-dashboard/weather-type';
 
 export class Country {
 
-    public name: string;
+    public id: string;
     public capital: string;
     public flagImageUrl: string;
     public flickrImageUrl: string;
@@ -13,8 +13,17 @@ export class Country {
     public latitude: number;
     public longitude: number;
 
-    constructor(name: string) {
-        this.name = name;
+    constructor(public name: string, public pending: boolean = true) { 
+        this.id = this.guid();
+    }
+
+    private guid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 
     setLocation(lat: number, lng: number): void {
