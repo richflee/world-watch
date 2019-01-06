@@ -11,6 +11,7 @@ import { TranslateService, TranslateModule, TranslateLoader } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { CountryEffects } from './global-dashboard/effects/country.effects';
 import { countryReducer } from './global-dashboard/reducers/country.reducers';
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     }),
     StoreModule.forRoot({ countries: countryReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25 }),
     EffectsModule.forRoot([ CountryEffects ])
   ],
   providers: [
